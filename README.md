@@ -12,7 +12,6 @@ The following command will generate a basic sitemap, listing all links recursive
     bin/sitemap generate http://www.onegeek.com.au/ sitemap.csv
 
 ### Generate a standard Sitemap JSON format
-The following command will generate a basic sitemap, listing all links recursively from the site, containing only URIs from the specified domain name (in this case, onegeek.com.au) and will save to a file named sitemap.csv
 
     bin/sitemap generate --format=json http://www.onegeek.com.au/ sitemap.json
   
