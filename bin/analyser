@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+
+$: << File.join(File.dirname(__FILE__), "..", "lib")
+require "sitemap/command"
+
+# Setup the app to work from a base Runner/Command etc.
+# exit(Sitemap::MainCommand.run || 0)
+Sitemap::MainCommand.run
