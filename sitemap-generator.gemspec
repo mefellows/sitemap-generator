@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Sitemap::VERSION
   spec.authors       = ["mefellows"]
   spec.email         = ["matt.fellows@onegeek.com.au"]
-  spec.description   = "Sitemap Generator"
-  spec.summary       = "A basic, human readable (CSV, JSON) sitemap generator. "
+  spec.summary       = "Sitemap Generator"
+  spec.description   = "A basic, human readable (CSV, JSON) sitemap generator. "
   spec.homepage      = "https://github.com/mefellows/sitemap-generator"
   spec.license       = "MIT"
 
