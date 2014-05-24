@@ -18,8 +18,7 @@ module Logging
 
     def configure_logger_for(classname)
       logger = Logger.new classname.to_s.gsub(/[^a-zA-Z0-9]/, '.').downcase.gsub(/\.+/, '.')
-      # logger = Logger.new classname.to_s.gsub(/\.+/, '.').downcase
-      logger.outputters = Outputter.stdout
+      logger.outputters << Log4r::FileOutputter.new('sitemaplog', :filename =>  'sitemap.log')
       logger
     end
   end

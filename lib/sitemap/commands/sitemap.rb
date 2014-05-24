@@ -1,9 +1,10 @@
 require 'sitemap/logging'
-require 'json'
+require 'sitemap/filters/filters'
 require 'csv'
-# require 'mechanize'
+require 'json'
 require 'nokogiri'
 require 'open-uri'
+require 'net/http'
 
 class SitemapGenerator
   include Logging
@@ -14,57 +15,85 @@ class SitemapGenerator
 
 
   #
-  # Generates sitemap in parallel
+  # Public: Output the index to JSON
   #
-  def generateParallel()
-
-  end
-
-
-  #
-  # Generates a sitemap in a hierarchical format
-  #
-  def generateHierarchical()
-
+  def write_index_to_json(index)
+    puts JSON::generate(index)
   end
 
   #
-  # Determines if a link is on the local domain + path or not
+  # Public: Write a Sitemap index to file
   #
-  def isLinkLocal(link, local, path = []  )
-    return false
-  end
-
-  #
-  # Write a Sitemap index to file
-  #
-  def writeIndexToFile(index, output_file)
+  def write_index_to_file(index, output_file)
     csv = CSV.open(output_file, 'wb')
-    csv << ['URI', 'Link', 'Title']
+    csv << ['URI', 'Title']
 
     # Flush Sitemap to CSV
     index.each do |key, value|
-      csv << [key, value['content'], value['title']]
-      puts key
+      csv << [key, value['title']]
     end
 
   end
 
   #
-  # Create the index
-  # @param uri URI object
+  # Public: Create the index recursively.
   #
-  def createIndex(uri, restrict)
-    link_index = Hash.new
-    doc = Nokogiri::HTML(open(uri))
+  # link       - The URI to build the index from recursively.
+  # base_uri   - The base URI (Host) to restrict which links are indexed
+  # restrict   - An array of URIs used to restrict which URIs are indexed.
+  #              all indexed URIs will include one of these paths.
+  # link_index - Any index to start the build from.
+  # depth      - The depth of recursion. 1 for no recursion, -1 for infinite. > 1 for specific depth
+  #
+  # Returns an index containing URIs as keys and an object representing the page.
+  #
+  def create_index(link, base_uri, filters, link_index = nil, depth = -1)
+    if link_index.nil?
+      log.debug('Creating new Index')
+      link_index = Hash.new
+    end
 
-    # Find all links on the page
-    doc.css('a').each do |link|
+    if link.nil? || base_uri.nil?
+      return
+    end
 
-      # Add entry to index
-      href = link.attributes["href"]
-      if (!link_index.has_key?(href) && isLinkLocal(href, uri.host, restrict))
-        link_index[href] = {'content' => link.content, 'title' => '', 'indexed' => false}
+    ### TODO: replace with generic filter method
+
+    if (Filters::Util.apply_filters([link], link_index, base_uri, filters).length > 0)
+
+      log.debug("Indexing document #{link} with base #{base_uri}, depth #{depth} and filters #{filters}")
+
+      # Only continue in this part if page NOT in index and is indexable
+      # Only fetch the document if it's not yet been indexed
+      doc = get_document(link)
+
+      ## All docs must be indexed, even if blacklisted...
+
+      if !doc.nil?
+        log.debug("New document found at #{link}, exploring links")
+        depth = depth - 1
+
+        # Set page title and add to index
+        link_index[link.to_s] = {'title' => doc.title}
+        log.info("Adding link to index: #{link.to_s}")
+
+        # Find all links on the page
+        links = []
+        doc.css('a').each do |l|
+           links << l.attributes["href"].to_s
+        end
+
+        # Filter out in-eligible links
+        a = Filters::Util.apply_filters(links, link_index, base_uri, filters)
+
+        links.each do |l|
+          l = Filters::Util.remove_fragment_from_uri(l)
+          if l && !l.empty?
+            if depth != -1
+              create_index(Filters::Util.create_absolute_uri(l, base_uri), base_uri, filters, link_index, depth)
+            end
+          end
+        end
       end
 
     end
@@ -73,15 +102,78 @@ class SitemapGenerator
   end
 
   #
+  # Public: Fetch a document the Internet.
+  #
+  def fetch(uri, domain = nil, limit = 10)
+    uri = Filters::Util.make_URI(uri)
+    if domain.nil?
+      domain = uri
+    end
+    domain = Filters::Util.make_URI(domain)
+
+    # You should choose a better exception.
+    raise ArgumentError, 'too many HTTP redirects' if limit == 0
+
+    response = Net::HTTP.get_response(uri)
+
+    case response
+      when Net::HTTPSuccess then
+        response.body
+      when Net::HTTPRedirection then
+        location = response['location']
+        location = Filters::Util.create_absolute_uri(location, uri)
+        log.warn("Redirecting #{uri} to new location: #{location}")
+
+        # Check new location belongs to current domain
+        if location.host == domain.host
+          fetch(location, uri, limit - 1)
+        elsif
+          log.warn("Redirecting from #{uri} to #{location} rejected due to cross-domain restrictions")
+        end
+        nil
+      else
+        nil
+    end
+  end
+
+  #
+  # Public: Fetch a document
+  #
+  def get_document(uri)
+    log.debug("Fetching document at #{uri}")
+    begin
+      response = fetch(uri.to_s)
+      doc = Nokogiri::HTML(response)
+      if doc.instance_of? Nokogiri::HTML::Document
+        return doc
+      end
+    rescue StandardError => bang
+      log.error("Error reading document #{uri}: #{bang.message}")
+      nil
+    end
+  end
+
+  #
   # Create the Sitemap
   #
-  def generate(uri, output_file, restrict_path = false, recurse = true)
+  def generate(uri, output_file, format = 'csv', depth = -1)
 
-    log.debug("Generating sitemap from #{uri} to #{output_file}. Recurse? #{recurse}")
+    log.debug("Generating sitemap from #{uri} to #{format} (output file? #{output_file}). Depth of recursion: #{depth}")
 
-    index = createIndex(uri, restrict_path)
-    writeIndexToFile(index, output_file)
-    puts index
+    # Setup filters. Ideally, have some outsider give me these
+    # Really, these are just options to the index
+    filters = Filters::Util.get_all_filters
+    index = create_index(uri, uri, filters, nil, depth)
+
+    case format
+      when 'json'
+        write_index_to_json(index)
+      when 'csv'
+        write_index_to_file(index, output_file)
+      else
+        puts "Please specify a valid output format, you gave #{format} Options are ['csv', 'json']"
+        exit(1)
+    end
   end
 
 end
