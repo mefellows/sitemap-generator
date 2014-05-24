@@ -6,6 +6,7 @@ A simple command-line Sitemap generator tool. Useful for quickly auditing a webs
     gem install sitemap-generator
 
 *Getting started with code*
+
 If you want to get your hands dirty in code:
 
     git clone https://github.com/mefellows/sitemap-generator
