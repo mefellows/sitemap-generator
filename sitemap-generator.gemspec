@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'sitemap/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "sitemap-analyser"
+  spec.name          = "sitemap-generator"
   spec.version       = Sitemap::VERSION
   spec.authors       = ["mefellows"]
   spec.email         = ["matt.fellows@onegeek.com.au"]

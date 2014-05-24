@@ -17,8 +17,8 @@ module Sitemap
 
   class SitemapCommand < AbstractCommand
       option "--no-recursion", :flag, "Prevents sitemap recursion", :default => false
-      option "--format", "format", "Specify the output format. Defaults to 'csv'. ", :attribute_name => :format, :default => 'csv'
-      option "--depth", "depth", "Level of depth to recurse. Default is -1 (infinite).", :attribute_name => :depth, :default => -1 do |s|
+      option "--format", "format", "Specify the output format. Options are [csv, json]", :attribute_name => :format, :default => 'csv'
+      option "--depth", "depth", "Level of depth to recurse", :attribute_name => :depth, :default => -1 do |s|
         Integer(s)
       end
 
