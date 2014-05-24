@@ -13,7 +13,6 @@ class SitemapGenerator
     log.debug('Initialising generator')
   end
 
-
   #
   # Public: Output the index to JSON
   #
