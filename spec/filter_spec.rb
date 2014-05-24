@@ -85,6 +85,10 @@ describe Filters::ResourcesFilter do
     index['http://foo.com/foo'] = ""
     index['http://foo.com/foo.pdf'] = ""
     index['http://foo.com/bar'] = ""
+    index['http://foo.com/bar#'] = ""
+    index['http://foo.com/bar/#'] = ""
+    index['http://foo.com/bar/#foo'] = ""
+    index['http://foo.com/bar/#!/hashbang/foo'] = ""
     index['http://foo.com/bar.tar.gz'] = ""
     index['http://bar.com/foo'] = ""
     index['http://www.mootools.net/'] = ""
@@ -118,7 +122,7 @@ describe Filters::ResourcesFilter do
     puts i
 
     # Need to prevent mutation in filtering
-    expect(filters.length).to eq 3
+    expect(filters.length).to eq 4
 
     expect(i.length).to eq 0
 

@@ -54,10 +54,10 @@ module Filters
     # Public: Get all known filters
     #
     def self.get_all_filters
-      return [Filters::ValidURIFilter.new, Filters::LocalFilter.new, Filters::ResourcesFilter.new]
+      return [Filters::ValidURIFilter.new, Filters::LocalFilter.new, Filters::ResourcesFilter.new, Filters::URIFragmentFilter.new]
     end
 
-    # Public: Apply URI filters to a Hash.
+    # Public: Apply URI Filters to a Hash.
     #
     # uris      - Set (Array|Hash) of URIs to be filtered.
     # index     - Current index
@@ -79,7 +79,7 @@ module Filters
           f = filters_clone.shift
           uris = apply_filters(uris, index, base_uri, filters_clone)
 
-          uris = uris.select do |k,v|
+          uris = uris.select do |k|
             f.filter(index, k, base_uri)
           end
         end
@@ -157,8 +157,9 @@ module Filters
     #
     def filter(index, link, base_uri)
       link = Filters::Util.make_URI(link)
-      return false unless  (link.nil? || !link.fragment.nil?)
-      true
+      return true unless (link != nil && link.fragment != nil)
+      log.debug("Rejecting link #{link} as it contains fragments #{link.fragment}")
+      false
     end
   end
 
@@ -174,7 +175,9 @@ module Filters
     # Returns the link if it should be indexed else nil.
     #
     def filter(index, link, base_uri)
-      return true unless link.nil? || link.to_s.match(/.*\.[a-zA-Z0-9_\-\s]+(?!\/)$/)
+      link = Filters::Util.make_URI(link)
+      return true unless link == nil || link.eql?('')
+      log.debug("Rejecting link #{link} as it is not deemed to be a valid URI")
       false
     end
   end
@@ -196,6 +199,7 @@ module Filters
         return true
       end
       return true unless link.path.to_s.match(/.*\.[a-zA-Z0-9_\-\s]+(?!\/)$/)
+      log.debug("Rejecting link #{link} as it is a static resource #{link.path}")
       false
     end
   end

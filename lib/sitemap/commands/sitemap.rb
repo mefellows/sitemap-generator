@@ -1,5 +1,6 @@
 require 'sitemap/logging'
 require 'sitemap/filters/filters'
+require 'sitemap/filters/transformers'
 require 'csv'
 require 'json'
 require 'nokogiri'
@@ -37,16 +38,16 @@ class SitemapGenerator
   #
   # Public: Create the index recursively.
   #
-  # link       - The URI to build the index from recursively.
-  # base_uri   - The base URI (Host) to restrict which links are indexed
-  # restrict   - An array of URIs used to restrict which URIs are indexed.
-  #              all indexed URIs will include one of these paths.
-  # link_index - Any index to start the build from.
-  # depth      - The depth of recursion. 1 for no recursion, -1 for infinite. > 1 for specific depth
+  # link          - The URI to build the index from recursively.
+  # base_uri      - The base URI (Host) to restrict which links are indexed
+  # filters       - An array of Filters to be applied before indexing
+  # transformers  - An array of Transformers to be applied before indexing
+  # link_index    - Any index to start the build from.
+  # depth         - The depth of recursion. 1 for no recursion, -1 for infinite, > 1 for specific depth
   #
   # Returns an index containing URIs as keys and an object representing the page.
   #
-  def create_index(link, base_uri, filters, link_index = nil, depth = -1)
+  def create_index(link, base_uri, filters, transformers, link_index = nil, depth = -1)
     if link_index.nil?
       log.debug('Creating new Index')
       link_index = Hash.new
@@ -55,8 +56,6 @@ class SitemapGenerator
     if link.nil? || base_uri.nil?
       return
     end
-
-    ### TODO: replace with generic filter method
 
     if (Filters::Util.apply_filters([link], link_index, base_uri, filters).length > 0)
 
@@ -82,14 +81,17 @@ class SitemapGenerator
            links << l.attributes["href"].to_s
         end
 
+        # Transform URLs before indexing
+        Transformers::Util.apply_transformers(links, transformers)
+
         # Filter out in-eligible links
-        a = Filters::Util.apply_filters(links, link_index, base_uri, filters)
+        Filters::Util.apply_filters(links, link_index, base_uri, filters)
 
         links.each do |l|
           l = Filters::Util.remove_fragment_from_uri(l)
           if l && !l.empty?
             if depth != -1
-              create_index(Filters::Util.create_absolute_uri(l, base_uri), base_uri, filters, link_index, depth)
+              create_index(Filters::Util.create_absolute_uri(l, base_uri), base_uri, filters,  transformers, link_index, depth)
             end
           end
         end
@@ -155,14 +157,10 @@ class SitemapGenerator
   #
   # Create the Sitemap
   #
-  def generate(uri, output_file, format = 'csv', depth = -1)
+  def generate(uri, output_file, filters, transformers, format = 'csv', depth = -1)
 
     log.debug("Generating sitemap from #{uri} to #{format} (output file? #{output_file}). Depth of recursion: #{depth}")
-
-    # Setup filters. Ideally, have some outsider give me these
-    # Really, these are just options to the index
-    filters = Filters::Util.get_all_filters
-    index = create_index(uri, uri, filters, nil, depth)
+    index = create_index(uri, uri, filters, transformers, nil, depth)
 
     case format
       when 'json'

@@ -1,6 +1,7 @@
 require 'sitemap/version'
 require 'sitemap/logging'
 require 'sitemap/commands/sitemap'
+require 'sitemap/filters/transformers'
 require 'clamp'
 
 module Sitemap
@@ -18,6 +19,8 @@ module Sitemap
   class SitemapCommand < AbstractCommand
       option "--no-recursion", :flag, "Prevents sitemap recursion", :default => false
       option "--format", "format", "Specify the output format. Options are [csv, json]", :attribute_name => :format, :default => 'csv'
+      option "--query-strings", :flag, "Allow query strings in URIs", :default => false
+      option "--fragments", :flag, "Allow fragments in URIs", :default => false
       option "--depth", "depth", "Level of depth to recurse", :attribute_name => :depth, :default => -1 do |s|
         Integer(s)
       end
@@ -51,7 +54,29 @@ module Sitemap
 
       log.info('Running sitemap generator')
       generator = SitemapGenerator.new()
-      generator.generate(uri, output_file, format, real_depth)
+
+      # Setup filters and transformers
+      filters = Filters::Util.get_all_filters
+      transformers = Transformers::Util.get_all_transformers
+
+      # If query strings enabled, remove QueryString transformer
+      if query_strings?
+        transformers = transformers.select do |t|
+          next true unless t.instance_of? Transformers::URIQueryStringTransformer
+          false
+        end
+      end
+
+      # If query strings enabled, remove QueryString transformer
+      if fragments?
+        filters = filters.select do |t|
+          next true unless t.instance_of? Filters::URIFragmentFilter
+          false
+        end
+      end
+
+      # Create the sitemap!
+      generator.generate(uri, output_file, filters, transformers, format, real_depth)
     end
   end
 
