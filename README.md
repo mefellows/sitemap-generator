@@ -5,14 +5,14 @@ A simple command-line Sitemap generator tool. Useful for quickly auditing a webs
 
     gem install sitemap-generator
 
-### Getting started with code
+*Getting started with code*
+If you want to get your hands dirty in code:
 
     git clone https://github.com/mefellows/sitemap-generator
     cd sitemap-generator
     bundle install
-
-### create a re-usable
-
+    bin/sitemap
+    
 ## Examples
 
 ### Generate a standard CSV Sitemap file
@@ -30,10 +30,16 @@ This command deliberately doesn't write to file in order to allow unix-style pip
 ### Generate a Sitemap 3 levels deep 
     
     sitemap generate --depth=3 http://www.onegeek.com.au/ sitemap.csv
-    
+
 ### Generate a Sitemap containing links only on the specified URI
 
     sitemap generate --no-recursion http://www.onegeek.com.au/ sitemap.csv
+    
+### Generate a Sitemap that contains URI fragments and query strings
+
+By default, URI fragments like ```foo.com/#!/some-page``` and query strings like ```foo.com/?bar=baz``` are ignored - they are generally duplicitous so sitemap-generator strips them off entirely. This lets them back in:
+
+    sitemap generate --query-strings --fragments http://www.onegeek.com.au/ sitemap.csv
     
 ## Getting Help
 
