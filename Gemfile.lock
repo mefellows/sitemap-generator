@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sitemap-generator (0.0.3)
+    sitemap-generator (0.0.4)
       clamp
       json
       log4r
