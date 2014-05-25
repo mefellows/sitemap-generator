@@ -67,7 +67,7 @@ module Sitemap
         end
       end
 
-      # If query strings enabled, remove QueryString transformer
+      # If fragments enabled, remove URIFragmentFilter transformer
       if fragments?
         filters = filters.select do |t|
           next true unless t.instance_of? Filters::URIFragmentFilter

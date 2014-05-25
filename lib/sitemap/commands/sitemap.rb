@@ -103,7 +103,7 @@ class SitemapGenerator
   end
 
   #
-  # Public: Fetch a document the Internet.
+  # Public: Fetch a document from the Internet.
   #
   def fetch(uri, domain = nil, limit = 10)
     uri = Filters::Util.make_URI(uri)
@@ -112,7 +112,6 @@ class SitemapGenerator
     end
     domain = Filters::Util.make_URI(domain)
 
-    # You should choose a better exception.
     raise ArgumentError, 'too many HTTP redirects' if limit == 0
 
     response = Net::HTTP.get_response(uri)

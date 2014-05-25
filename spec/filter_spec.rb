@@ -108,7 +108,7 @@ describe Filters::ResourcesFilter do
     i = Filters::Util.apply_filters(index, Hash.new, url, filters)
     puts i
 
-    expect(i.length).to eq 3
+    expect(i.length).to eq 4
 
   end
 

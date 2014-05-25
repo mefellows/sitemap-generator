@@ -11,8 +11,6 @@ describe SitemapGenerator do
     filters = Filters::Util.get_all_filters
     transformers = Transformers::Util.get_all_transformers
 
-    # onegeek.com.au source as at 23/05/2014
-
     # Note no trailing slash -> need to find why lack of trailing slash is an issue
     link = URI::parse("http://www.onegeek.com.au")
     index = generator.create_index(link, link, filters, transformers, nil, 1)
