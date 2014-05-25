@@ -4,6 +4,8 @@ A simple command-line Sitemap generator tool. Useful for quickly auditing a webs
 
 Distributed as a Ruby Gem [https://rubygems.org/gems/sitemap-generator], it is not intended to be a Search Engine sitemap or integrated CMS/Rails/etc. - there are plenty of other gems that do that well.
 
+[![Gem Version](https://badge.fury.io/rb/sitemap-generator.svg)](http://badge.fury.io/rb/sitemap-generator)
+
 ## Getting started
 
     gem install sitemap-generator
