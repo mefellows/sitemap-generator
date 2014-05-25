@@ -76,7 +76,10 @@ module Sitemap
       end
 
       # Create the sitemap!
-      generator.generate(uri, output_file, filters, transformers, format, real_depth)
+      result = generator.generate(uri, output_file, filters, transformers, format, real_depth)
+
+      # TODO: Works for JSON, probably not so useful for write to file...
+      puts result
     end
   end
 

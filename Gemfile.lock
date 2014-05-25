@@ -6,15 +6,27 @@ PATH
       json
       log4r
       nokogiri (= 1.5.11)
+      sinatra
+      sinatra-param
+      unicorn
 
 GEM
   remote: https://rubygems.org/
   specs:
+    backports (3.6.0)
     clamp (0.6.3)
     diff-lcs (1.2.5)
     json (1.8.1)
+    kgio (2.9.2)
     log4r (1.1.10)
+    multi_json (1.10.1)
     nokogiri (1.5.11)
+    rack (1.5.2)
+    rack-protection (1.5.3)
+      rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
+    raindrops (0.13.0)
     rake (10.3.2)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
@@ -24,6 +36,24 @@ GEM
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.6)
+    sinatra (1.4.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    sinatra-contrib (1.4.2)
+      backports (>= 2.0)
+      multi_json
+      rack-protection
+      rack-test
+      sinatra (~> 1.4.0)
+      tilt (~> 1.3)
+    sinatra-param (1.2.2)
+      sinatra (~> 1.3)
+    tilt (1.4.1)
+    unicorn (4.8.3)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
 
 PLATFORMS
   ruby
@@ -32,4 +62,5 @@ DEPENDENCIES
   bundler (~> 1.3)
   rake
   rspec
+  sinatra-contrib
   sitemap-generator!

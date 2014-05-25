@@ -21,8 +21,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
+  spec.add_development_dependency "sinatra-contrib"
   spec.add_runtime_dependency "clamp"
   spec.add_runtime_dependency "json"
   spec.add_runtime_dependency "log4r"
   spec.add_runtime_dependency "nokogiri", "1.5.11"
+  spec.add_runtime_dependency "sinatra"
+  spec.add_runtime_dependency "sinatra-param"
+  spec.add_runtime_dependency "unicorn"
 end

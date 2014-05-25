@@ -68,6 +68,11 @@ describe Filters::ResourcesFilter do
     filter.filter(Hash.new, 'http://www.foo.com', 'http://www.foo.com/').should eq(true)
   end
 
+  it 'Should allow valid URIs' do
+    filter = Filters::ResourcesFilter.new
+    filter.filter(Hash.new, 'www.foo.com', 'http://www.foo.com/').should eq(true)
+  end
+
   it 'Should not allow links to be indexed more than once' do
     filter = Filters::LocalFilter.new
 

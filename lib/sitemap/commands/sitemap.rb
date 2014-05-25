@@ -18,21 +18,28 @@ class SitemapGenerator
   # Public: Output the index to JSON
   #
   def write_index_to_json(index)
-    puts JSON::generate(index)
+    JSON::generate(index)
   end
 
   #
   # Public: Write a Sitemap index to file
   #
+  # Returns true if successful, false if the write failed
+  #
   def write_index_to_file(index, output_file)
-    csv = CSV.open(output_file, 'wb')
-    csv << ['URI', 'Title']
+    begin
+      csv = CSV.open(output_file, 'wb')
+      csv << ['URI', 'Title']
 
-    # Flush Sitemap to CSV
-    index.each do |key, value|
-      csv << [key, value['title']]
+      # Flush Sitemap to CSV
+      index.each do |key, value|
+        csv << [key, value['title']]
+      end
+    rescue
+      return false
     end
 
+    return true
   end
 
   #
@@ -154,7 +161,9 @@ class SitemapGenerator
   end
 
   #
-  # Create the Sitemap
+  # Public: Create the Sitemap
+  #
+  # Returns a JSON formatted document or exits cleanly
   #
   def generate(uri, output_file, filters, transformers, format = 'csv', depth = -1)
 
@@ -163,12 +172,11 @@ class SitemapGenerator
 
     case format
       when 'json'
-        write_index_to_json(index)
+        return write_index_to_json(index)
       when 'csv'
         write_index_to_file(index, output_file)
       else
-        puts "Please specify a valid output format, you gave #{format} Options are ['csv', 'json']"
-        exit(1)
+        raise ArgumentError ,"Please specify a valid output format, you gave #{format} Options are ['csv', 'json']"
     end
   end
 
