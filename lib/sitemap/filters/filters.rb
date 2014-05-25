@@ -79,7 +79,7 @@ module Filters
           f = filters_clone.shift
           uris = apply_filters(uris, index, base_uri, filters_clone)
 
-          uris = uris.select do |k|
+          uris = uris.select do |k,v|
             f.filter(index, k, base_uri)
           end
         end

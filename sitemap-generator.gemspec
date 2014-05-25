@@ -24,5 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "clamp"
   spec.add_runtime_dependency "json"
   spec.add_runtime_dependency "log4r"
-  spec.add_runtime_dependency "nokogiri"
+  spec.add_runtime_dependency "nokogiri", "1.5.11"
 end

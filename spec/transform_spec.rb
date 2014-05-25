@@ -39,9 +39,8 @@ describe Transformers::Util do
     i = Transformers::Util.apply_transformers(index, transformers)
 
     expect(i.length).to eq 25
-    expect(i[4].to_s).to eq 'http://foo.com/foo'
-    expect(i[5].to_s).to eq 'http://foo.com/foo'
-    expect(i[6].to_s).to eq 'http://foo.com/foo'
-    expect(i[7].to_s).to eq 'http://foo.com/foo'
+    i.each  do |k,v|
+      expect(k.to_s.match('\?')).to eq nil
+    end
   end
 end
