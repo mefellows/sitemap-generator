@@ -1,0 +1,28 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li class="active"><a ng-href="#">Home</a></li>
+    <li><a ng-href="http://github.com/mefellows/sitemap-generator">About</a></li>
+  </ul>
+  <h1 class="text-muted">Sitemap Generator</h1>
+</div>
+
+<div class="jumbotron">
+  <h2>Enter your website</h2 >
+  <input ng-model="website" />
+  <p><a class="btn btn-lg btn-success" ng-href="#">Search<span class="glyphicon glyphicon-ok"></span></a></p>
+</div>
+
+<div class="row marketing">
+  <h3>Your Sitemap</h3>
+  <table>
+    <head><th>Link</th><th>Title</th></head>
+    <tr ng-repeat="item in sitemap" >
+            <td><a href="{{item.href}}" >{{item.href}}</a></td>
+            <td>{{item.title}}</td>
+  </table>
+</div>
+
+
+<div class="footer">
+  <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+</div>
