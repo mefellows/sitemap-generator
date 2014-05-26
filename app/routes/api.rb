@@ -23,6 +23,15 @@ module Sitemap
 
       before do
         content_type :json
+
+        # CORS
+        headers 'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST']
+      end
+
+      # CORS
+      options '/*' do
+        200
       end
 
       # Public: Main API entry point to run a Sitemap generation service
