@@ -1,51 +1,25 @@
 'use strict';
 
-angular.module('sitemapGeneratorApp', [])
-  .controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
+angular.module('sitemapGeneratorApp')
+  .controller('MainCtrl', ['$scope', '$http', 'Sitemap', function ($scope, $http, Sitemap) {
 
-    $http.get('http://localhost:8080/api/dummy').success(function(data) {
-      var sitemap = []
-      for (var i in data) {
-        // console.log(i)
-        var obj = {"href": i, "title": data[i].title}
-        sitemap[sitemap.length] = obj
-        console.log(obj)
-      }
+    // var data = Sitemap.dummy()
 
-      $scope.sitemap = sitemap;
-    });
 
-    alert('aoeu')
+    $scope.generateSitemap = function(url) {
+
+      var data = Sitemap.get({website: url})
+      data.$promise.then(function (result) {
+        console.log(result)
+        var sitemap = [];
+        for (var i in result) {
+          if (i.indexOf('http') == 0) {
+            sitemap[sitemap.length] = {"href": i, "title": result[i].title};
+          }
+        }
+        $scope.sitemap = sitemap;
+      });
+    }
+
+
   }]);
-
-  // angular.module('sitemapGeneratorApp', ['sitemapServices'])
-  // .controller('MainCtrl', ['$scope', '$http', 'Sitemap' function ($scope, $http, Sitemap) {
-
-  //   $http.get('http://localhost:8080/api/dummy').success(function(data) {
-  //     var sitemap = []
-  //     for (var i in data) {
-  //       // console.log(i)
-  //       var obj = {"href": i, "title": data[i].title}
-  //       sitemap[sitemap.length] = obj
-  //       console.log(obj)
-  //     }
-
-  //     $scope.sitemap = sitemap;
-  //   });
-  // });
-
-// angular.module('sitemapGeneratorApp', ['sitemap.services'])
-//   .controller('MainCtrl', ['$scope', '$http', 'Sitemap'], function ($scope, $http, Sitemap) {
-
-//     $http.get('http://localhost:8080/api/dummy').success(function(data) {
-//       var sitemap = []
-//       for (var i in data) {
-//         // console.log(i)
-//         var obj = {"href": i, "title": data[i].title}
-//         sitemap[sitemap.length] = obj
-//         console.log(obj)
-//       }
-
-//       $scope.sitemap = sitemap;
-//     });
-//   });
