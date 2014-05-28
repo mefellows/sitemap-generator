@@ -9,6 +9,7 @@ PATH
       rake
       rspec
       sinatra
+      sinatra-contrib
       sinatra-param
       unicorn
 
@@ -64,5 +65,4 @@ DEPENDENCIES
   bundler (~> 1.3)
   rake
   rspec
-  sinatra-contrib
   sitemap-generator!
