@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "sinatra-contrib"
+  spec.add_runtime_dependency "rspec"
   spec.add_runtime_dependency "rake"
   spec.add_runtime_dependency "clamp"
   spec.add_runtime_dependency "json"
