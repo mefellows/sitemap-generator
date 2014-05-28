@@ -6,6 +6,7 @@ PATH
       json
       log4r
       nokogiri (= 1.5.11)
+      rake
       sinatra
       sinatra-param
       unicorn
