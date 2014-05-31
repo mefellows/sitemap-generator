@@ -11,8 +11,8 @@ sitemapServices.factory('Sitemap', ['$q', '$rootScope', function($q, $rootScope)
     // Create a unique callback ID to map requests to responses
     var currentCallbackId = 0;
     // Create our websocket object with the address to the websocket
-//    var url = 'ws://' + window.location.host + '/socket';
-    var url = 'ws://localhost:8080/socket';
+    var url = 'ws://' + window.location.host + '/socket';
+//    var url = 'ws://localhost:8080/socket';
     var ws = new WebSocket(url);
 
     ws.onopen = function(){
