@@ -22,30 +22,36 @@ The following command will generate a basic sitemap, listing all links recursive
 
 This command deliberately doesn't write to file in order to allow unix-style pipelining
 
-    sitemap generate --format=json http://www.onegeek.com.au/ 
-  
-### Generate a Sitemap 3 levels deep 
-    
+    sitemap generate --format=json http://www.onegeek.com.au/
+
+### Generate a Sitemap 3 levels deep
+
     sitemap generate --depth=3 http://www.onegeek.com.au/ sitemap.csv
 
 ### Generate a Sitemap containing links only on the specified URI
 
     sitemap generate --no-recursion http://www.onegeek.com.au/ sitemap.csv
-    
+
 ### Generate a Sitemap that contains URI fragments and query strings
 
 By default, URI fragments like ```foo.com/#!/some-page``` and query strings like ```foo.com/?bar=baz``` are ignored - they are generally duplicitous so sitemap-generator strips them off entirely. This lets them back in:
 
     sitemap generate --query-strings --fragments http://www.onegeek.com.au/ sitemap.csv
-    
+
 ## Getting Help
 
     sitemap
     sitemap generate --help
-    
+
 ## Alternatives?
 
 So of course, after spending a few hours writing this I forgot that wget can do this for you, well basically anyway:
 
     wget -r --delete-after <todo>
 
+
+# Website
+
+## Run Server
+
+foreman start

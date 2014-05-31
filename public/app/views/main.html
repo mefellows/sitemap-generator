@@ -10,6 +10,7 @@
   <h2>Enter your website</h2 >
   <input ng-model="website" />
   <p><a class="btn btn-lg btn-success" ng-click='generateSitemap(website)'>Search<span class="glyphicon glyphicon-ok"></span></a></p>
+    <button download-csv="getData()">Download as CSV</button>
 </div>
 
 <div class="row marketing">
@@ -24,5 +25,5 @@
 
 
 <div class="footer">
-  <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+  <p>Built with <span class="glyphicon glyphicon-heart"></span> by <a href="http://www.onegeek.com.au">Matt Fellows</a></p>
 </div>

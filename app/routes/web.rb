@@ -13,7 +13,12 @@ module Sitemap
     class Web < Sinatra::Application
       include Logging
 
-      configure do
+      configure :development, :test do
+        set :views,         'app/views'
+        set :public_folder, 'public/dist'
+      end
+
+      configure :production do
         set :views,         'app/views'
         set :public_folder, 'public/dist'
       end
@@ -23,6 +28,14 @@ module Sitemap
       #
       get '/' do
         erb :home
+      end
+
+
+      # Public: WebSocket test
+      #
+      #
+      get '/hello' do
+        erb :hello
       end
 
       #
