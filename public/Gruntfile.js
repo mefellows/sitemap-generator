@@ -440,13 +440,13 @@ module.exports = function (grunt) {
         'autoprefixer',
         'concat',
         'ngmin',
+        'copy:dist',
         'cdnify',
         'cssmin',
         'uglify',
         'rev',
         'usemin',
         'htmlmin',
-        'copy:dist',
         'copy:ruby'
     ]);
 
