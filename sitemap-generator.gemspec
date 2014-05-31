@@ -41,4 +41,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "foreman"
   spec.add_runtime_dependency "dotenv"
   spec.add_runtime_dependency "sinatra-websocket"
+  spec.add_runtime_dependency "compass"
 end
