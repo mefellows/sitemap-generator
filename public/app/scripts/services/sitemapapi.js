@@ -14,7 +14,7 @@ sitemapServices.factory('Sitemap', ['$q', '$rootScope', function($q, $rootScope)
     var url = 'ws://' + window.location.host + '/socket';
 //    var url = 'ws://localhost:8080/socket';
     var ws = new WebSocket(url);
-
+    
     ws.onopen = function(){
         console.log("Socket has been opened!");
     };

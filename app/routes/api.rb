@@ -77,7 +77,7 @@ module Sitemap
           # Create the index
           generator = SitemapGenerator.new
 
-          # index = generator.generate(url, nil, filters, transformers, 'json', params[:depth])
+          index = generator.generate(url, nil, filters, transformers, 'json', params[:depth])
           index.to_s
         end
 
@@ -101,13 +101,14 @@ module Sitemap
               ws.onmessage do |msg|
                 EM.next_tick {
                   json_msg = JSON.parse(msg)
+                  depth = json_msg['depth'] || -1
 
                   filters = Filters::Util.get_all_filters
                   transformers = Transformers::Util.get_all_transformers
                   generator = SitemapGenerator.new
 
-                  index = {"http://www.onegeek.com.au/1" => {"title" => "Hello1"}, "http://www.onegeek.com.au/2" => {"title" => "Hello2"}, "http://www.onegeek.com.au/3" => {"title" => "Hello3"}}
-                  # index = generator.generate('http://' + json_msg['url'], nil, filters, transformers, 'object', 1)
+                  # index = {"http://www.onegeek.com.au/1" => {"title" => "Hello1"}, "http://www.onegeek.com.au/2" => {"title" => "Hello2"}, "http://www.onegeek.com.au/3" => {"title" => "Hello3"}}
+                  index = generator.generate('http://' + json_msg['url'], nil, filters, transformers, 'object', depth)
 
                   response_obj = {'data' => index, 'callback_id' => json_msg['callback_id'] }
                   settings.sockets.each{|s| s.send(JSON::generate(response_obj)) }
