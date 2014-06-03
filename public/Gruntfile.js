@@ -419,7 +419,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
+      return grunt.task.run(['heroku', 'connect:dist:keepalive']);
     }
 
     grunt.task.run([
@@ -446,7 +446,7 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
-  grunt.registerTask('build', [
+  grunt.registerTask('heroku', [
     'clean:dist',
     'bowerInstall',
     'replace:socket_url_prod',
@@ -467,6 +467,6 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'newer:jshint',
     'test',
-    'build'
+    'heroku'
   ]);
 };
