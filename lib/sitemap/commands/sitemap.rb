@@ -175,8 +175,10 @@ class SitemapGenerator
         return write_index_to_json(index)
       when 'csv'
         write_index_to_file(index, output_file)
+      when 'object'
+        index
       else
-        raise ArgumentError ,"Please specify a valid output format, you gave #{format} Options are ['csv', 'json']"
+        raise ArgumentError ,"Please specify a valid output format, you gave #{format} Options are ['csv', 'json', 'object']"
     end
   end
 

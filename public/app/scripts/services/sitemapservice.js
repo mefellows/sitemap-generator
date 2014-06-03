@@ -15,20 +15,20 @@ placeholderServices.factory('SocketService', ['$q', '$rootScope', '$interval', f
     var ws = new WebSocket(url);
 
     ws.onopen = function(){
-        console.log("Socket has been opened!");
+//        console.log("Socket has been opened!");
 
         pingPong()
-        console.log("Setup game of ping-pong")
+//        console.log("Setup game of ping-pong")
     };
 
     ws.onclose = function(){
-        console.log("Socket has been closed!");
+//        console.log("Socket has been closed!");
     };
 
     ws.onmessage = function(response) {
         // Check for ping!
         var obj = JSON.parse(response.data)
-        console.log(obj.message)
+//        console.log(obj.message)
 
         if (obj.message != 'pong') {
             listener(obj);
@@ -46,14 +46,14 @@ placeholderServices.factory('SocketService', ['$q', '$rootScope', '$interval', f
 
         var pong = function() {
             var request = JSON.stringify({'message': 'ping'});
-            console.log('Sending pong request: ' + request);
+//            console.log('Sending pong request: ' + request);
             ws.send(request);
         }
 
         // Set refresh to every 10s
         var promise = $interval(pong, 10000);
         promise.then(function(result) {
-            console.log("got pong result: " + result)
+//            console.log("got pong result: " + result)
         });
     }
 
@@ -74,7 +74,7 @@ placeholderServices.factory('SocketService', ['$q', '$rootScope', '$interval', f
             };
 
         }
-        console.log('Sending request', request);
+//        console.log('Sending request', request);
         ws.send(JSON.stringify(request));
         return defer.promise;
     }
