@@ -10,6 +10,8 @@ PATH
       json
       log4r
       nokogiri (= 1.5.11)
+      rake
+      rspec
       sinatra
       sinatra-contrib
       sinatra-param
@@ -79,6 +81,4 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.3)
-  rake
-  rspec
   sitemap-generator!
