@@ -363,6 +363,20 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      ruby: {
+          files: [
+              {
+                  src: '<%= yeoman.dist %>/index.html',
+                  dest: '<%= yeoman.app %>/../../app/views/home.erb'
+              },
+              {
+                  expand: true,
+                  cwd: '<%= yeoman.app %>/bower_components',
+                  src: ['**'],
+                  dest: '<%= yeoman.dist %>/bower_components'
+              }
+          ]
       }
     },
 
@@ -461,7 +475,8 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'copy:ruby'
   ]);
 
   grunt.registerTask('default', [
