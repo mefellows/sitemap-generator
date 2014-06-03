@@ -15,7 +15,7 @@ module Sitemap
 
       configure do
         set :views,         'app/views'
-        set :public_folder, 'public/dist'
+        set :public_folder, 'public/app'
       end
 
       # Public: Main HTML web page to interact with app

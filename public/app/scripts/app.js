@@ -6,7 +6,8 @@ angular
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'sitemapServices'
+    'sitemapServices',
+    'sitemapSocketService'
   ])
   .config(function ($routeProvider) {
     $routeProvider

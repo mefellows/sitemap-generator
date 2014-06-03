@@ -15,6 +15,8 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  grunt.loadNpmTasks('grunt-text-replace');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -23,6 +25,46 @@ module.exports = function (grunt) {
       // configurable paths
       app: require('./bower.json').appPath || 'app',
       dist: 'dist'
+    },
+
+    // Updates socket URL in scripts
+    replace: {
+      socket_url_test: {
+          src: ['app/scripts/**/*.js'],
+          overwrite: true,
+          replacements: [{
+              from: 'websocketurl',
+              to: 'ws://localhost:8080/socket'
+          },{
+              from: "ws://' + window.location.host + '/socket",
+              to: 'ws://localhost:8080/socket'
+          },
+          {
+              from: 'websocketurl',
+              to: 'http://localhost:8080/'
+          },{
+              from: "http://' + window.location.host + '/",
+              to: 'http://localhost:8080/'
+          }]
+      },
+      socket_url_prod: {
+          src: ['app/scripts/**/*.js'],
+          overwrite: true,
+          replacements: [{
+              from: 'ws://localhost:8080/socket',
+              to: "ws://' + window.location.host + '/socket"
+          },{
+              from: 'websocketurl',
+              to: "ws://' + window.location.host + '/socket"
+          },
+          {
+              from: 'http://localhost:8080/',
+              to: "http://' + window.location.host + '/"
+          },{
+              from: 'websocketurl',
+              to: "http://' + window.location.host + '/"
+          }]
+      }
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -383,6 +425,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'bowerInstall',
+      'replace:socket_url_test',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -406,6 +449,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'bowerInstall',
+    'replace:socket_url_prod',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sitemapGeneratorApp')
-  .controller('MainCtrl', ['$scope', '$http', 'Sitemap', function ($scope, $http, Sitemap) {
+  .controller('MainCtrl', ['$scope', '$http', 'Sitemap', 'SocketService', function ($scope, $http, Sitemap) {
 
     // var data = Sitemap.dummy()
 
