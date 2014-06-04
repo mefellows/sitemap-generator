@@ -1,29 +1,52 @@
 <div class="header">
-  <ul class="nav nav-pills pull-right">
-    <li class="active"><a ng-href="#">Home</a></li>
-    <li><a ng-href="http://github.com/mefellows/sitemap-generator">About</a></li>
-  </ul>
-  <h1 class="text-muted">Sitemap Generator</h1>
+    <ul class="nav nav-pills pull-right">
+        <li class="active"><a ng-href="#">Home</a></li>
+        <li><a ng-href="http://github.com/mefellows/sitemap-generator">About</a></li>
+    </ul>
+    <h1 class="text-muted">Sitemap Generator</h1>
 </div>
 
 <div class="jumbotron">
-  <h2>Enter your website</h2 >
-  <input ng-model="website" />
-  <p><a class="btn btn-lg btn-success" ng-click='generateSitemap(website)'>Search<span class="glyphicon glyphicon-ok"></span></a></p>
-    <button download-csv="getData()">Download as CSV</button>
+    <form role="form" class="form-inline">
+        <div class="form-group">
+            <label for="website">Website: </label>
+            <input ng-model="website" class="form-control" id="website"
+                   placeholder="Enter website e.g. www.onegeek.com.au">
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary btn-sm" ng-click='generateSitemap(website)'>Search
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
+    </form>
 </div>
 
 <div class="row marketing">
-  <h3>Your Sitemap</h3>
-  <table>
-    <head><th>Link</th><th>Title</th></head>
-    <tr ng-repeat="item in sitemap" >
-            <td><a href="{{item.href}}" >{{item.href}}</a></td>
-            <td>{{item.title}}</td>
-  </table>
+    <div class="panel panel-default">
+        <div class="panel-heading">Your Sitemap
+            <button download-csv="getData()" type="button" class="download-button btn btn-success btn-xs">
+                Download as CSV
+                <span class="glyphicon glyphicon-download"></span>
+            </button>
+        </div>
+        <div class="panel-body">
+            <table>
+                <head>
+                    <th>Link</th>
+                    <th>Title</th>
+                </head>
+                <tr ng-repeat="item in sitemap">
+                    <td><a href="{{item.href}}">{{item.href}}</a></td>
+                    <td>{{item.title}}</td>
+            </table>
+        </div>
+    </div>
+
+
 </div>
 
 
 <div class="footer">
-  <p>Built with <span class="glyphicon glyphicon-heart"></span> by <a href="http://www.onegeek.com.au">Matt Fellows</a></p>
+    <p>Built with <span class="glyphicon glyphicon-heart"></span> by <a href="http://www.onegeek.com.au">Matt
+        Fellows</a></p>
 </div>

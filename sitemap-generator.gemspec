@@ -19,27 +19,19 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.3"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
-  # spec.add_development_dependency "sass", "~>3.3.7"
-
   spec.add_runtime_dependency "rspec"
   spec.add_runtime_dependency "rake"
+  spec.add_runtime_dependency "sinatra-contrib"
   spec.add_runtime_dependency "clamp"
   spec.add_runtime_dependency "json"
   spec.add_runtime_dependency "log4r"
   spec.add_runtime_dependency "nokogiri", "1.5.11"
   spec.add_runtime_dependency "sinatra"
-  spec.add_runtime_dependency "sinatra-contrib"
   spec.add_runtime_dependency "sinatra-param"
-  # spec.add_runtime_dependency "async_sinatra"
   spec.add_runtime_dependency "eventmachine"
   spec.add_runtime_dependency "em-websocket"
-  # spec.add_runtime_dependency "unicorn"
   spec.add_runtime_dependency "thin"
-  # spec.add_runtime_dependency "puma"
   spec.add_runtime_dependency "foreman"
   spec.add_runtime_dependency "dotenv"
   spec.add_runtime_dependency "sinatra-websocket"
-  spec.add_runtime_dependency "compass"
 end

@@ -1,7 +1,2 @@
-.idea/
-.sass-cache/
 *.gem
-bin/*
-!bin/server
-!bin/sitemap
-.env
+/.env

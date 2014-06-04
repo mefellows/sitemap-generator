@@ -1,18 +1,13 @@
 'use strict';
 
 angular.module('sitemapGeneratorApp')
-    .controller('MainCtrl', ['$scope', '$http', 'Sitemap', function ($scope, $http, Sitemap) {
+    .controller('MainCtrl', ['$scope', '$http', 'SocketService', function ($scope, $http, $socketService) {
 
-        // Default website
-        $scope.website = 'www.onegeek.com.au'
-
-        /**
-         * Generate a Sitemap
-         */
         $scope.generateSitemap = function (url) {
+            var data = $socketService.getResponse({'url': 'http://' + url})
 
-            var data = Sitemap.getSitemap(url)
             data.then(function (result) {
+                result = result.message
                 console.log(result)
                 var sitemap = [];
                 for (var i in result) {

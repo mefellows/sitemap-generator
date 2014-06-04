@@ -178,7 +178,7 @@ class SitemapGenerator
       when 'object'
         index
       else
-        raise ArgumentError ,"Please specify a valid output format, you gave #{format} Options are ['csv', 'json']"
+        raise ArgumentError ,"Please specify a valid output format, you gave #{format} Options are ['csv', 'json', 'object']"
     end
   end
 
