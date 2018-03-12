@@ -4,6 +4,8 @@ A simple command-line Sitemap generator tool. Useful for quickly auditing a webs
 
 Distributed as a Ruby Gem [https://rubygems.org/gems/sitemap-generator], it is not intended to be a Search Engine sitemap or integrated CMS/Rails/etc. - there are plenty of other gems that do that well.
 
+_NOTE_: LinkedIn have changed their policy and the API this depended on is no longer available, meaning this tool no longer works, and is no longer actively maintained as a result.
+
 [![Gem Version](https://badge.fury.io/rb/sitemap-generator.svg)](http://badge.fury.io/rb/sitemap-generator)
 [![Build Status](https://travis-ci.org/mefellows/sitemap-generator.svg)](https://travis-ci.org/mefellows/sitemap-generator)
 ## Getting started
@@ -47,7 +49,8 @@ By default, URI fragments like ```foo.com/#!/some-page``` and query strings like
 
 So of course, after spending a few hours writing this I forgot that wget can do this for you, well basically anyway:
 
-    wget -r --delete-after <todo>
+    wget --spider --recursive --no-verbose --output-file=wgetlog.txt http://somewebsite.com
+    sed -n "s@.\+ URL:\([^ ]\+\) .\+@\1@p" wgetlog.txt | sed "s@&@\&amp;@" > sedlog.txt
 
 
 # Website
